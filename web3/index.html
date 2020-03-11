@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>11网络技术提升（防抖节流）</title>
+</head>
+<body>
+    <button id="btn">btn</button>
+    <input type="text" id="search">
+
+    <script>
+        // 防抖函数
+
+        // *******1.先等再执行↓↓↓↓↓↓↓↓********
+        // var timer = null;
+        // search.onkeyup = function () {
+        //     clearInterval(timer);
+        //     timer = setInterval(function () {
+        //         console.log(888);
+        //     }, 1000); 
+        // }
+
+        // 变量私有化↓  retuan {}
+        // 因为没有onkeyp之前这个函数已经变量提升了(?忘记是不是这个名字了)
+
+        // search.onkeyup = debounce(function (e) {
+        //     console.log(this.value);
+        //     // 想输出e.target——获得触发时间的元素
+        //     console.log(e.target);
+        // },1000);
+
+        // function debounce(func, time) {
+        //     // timer不放在全局是因为想包成一个功能函数
+        //     var timer = null;
+        //     // 因为return里面的只能在timer所存在的子域中
+        //     return function () {
+        //         // 这里的this指向的是dom元素，所以需要改变dom指向
+        //         var _this = this;
+        //         // 触发事件的元素的形参列表,是在function这个函数里执行的
+        //         // 所以在这里面才能找到argument
+        //         var argu = arguments;
+        //             clearInterval(timer);
+        //             timer = setInterval(function () {
+        //                 func.apply(_this, argu);
+        //                 // func函数指向是window，所以要改变this指向
+        //                 // 不选择bind的原因：
+        //                         // bind需要在操作后才能改变，
+        //                         // 而apply&call会立即操作
+        //             }, time); 
+        //     }    
+        // }
+    
+
+
+        // 2.*********先执行再等**********
+        //3.*******添加一个取消的功能*******
+        // 拿变量存一下就可以使用同一个了
+        function cb(e) {
+            console.log(this.value);
+            console.log(e.target);
+        }
+
+        var setUseAction = debounce(cb, 3000, false);
+
+        btn.onclick = setUseAction.cancel; 
+            // return 出来的是一个函数，然后我们调用的是它上面的方法
+            // 这里cancel不了的原因是——这里的debounce和onkeyup的debounce根本不是同一个
+        search.oninput = setUseAction;
+
+
+        function debounce(func, time, flag) {
+            var timer = null;
+            var debounced =  function () {
+                var _this = this;
+                var argu = arguments;
+                clearTimeout(timer);
+
+                    // 如果flag马上执行的话flag——true
+                    if(flag) {
+                        // 此时timer不存在就立即执行
+                        if(!timer) func.apply(_this, argu);
+
+                        timer = setTimeout(function() {
+                            timer = null;
+                        },time);
+
+                    }else {
+                        timer = setTimeout(function () {
+                        func.apply(_this, argu);
+                    }, time); 
+                }
+            debounced.cancel = function () {
+                clearTimeout(timer);
+                timer = null;
+            }
+            return debounced;
+        }    
+     }
+
+
+    </script>
+</body>
+</html>

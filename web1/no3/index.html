@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jsonp3</title>
+</head>
+<body>
+    
+
+    <script>
+        var oScript = document.createElement('script');
+        oScript.src = 'index.txt';
+        document.body.appendChild(oScript);
+
+
+        //回调函数+函数执行的形式可以保证数据加载完再执行
+        function aa(data) {
+            console.log(data);
+        }
+    
+    //1.在Index.txt中的内容↓
+
+        aa({"name" : "dg"});
+        //其实就是将上面script中的引入变成了——aa({"name" : "dg"});
+        //而aa();——是函数执行的一种形式，只有讲index.txt引入后才会相当于aa()函数写入程序
+        //此时刚好可以执行function aa函数
+    
+
+
+    //2.而新的问题是，前后端分离怎么统一名称呢？
+    //一般统一新的名字：
+    var oScript = document.createElement('script');
+        oScript.src = 'index.txt?cb=aa&keyword=hh&age=18';//增加cb=aa
+        document.body.appendChild(oScript);
+
+        //*********** jsonp都是GET请求
+    </script>
+
+</body>
+</html>

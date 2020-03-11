@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- 方法2对应的窗口 -->
+    <!-- <script>
+         
+    var age = 20;
+    // console.log(location.hash);
+
+    // console.log( window.parent.oldAge);
+
+    //判断上一个哈希值是否和这一个相等，如果相等则不再重复取
+    var lastHash = window.location.hash;
+    setInterval(function(){
+        if(lastHash != window.location.hash) {
+            console.log(location.hash);
+            //别忘了把这一次的哈希值赋给上一次
+            lastHash = window.location.hash;
+        }
+    }, 10);//频繁检查非常耗费性能
+
+    </script> -->
+
+
+
+
+
+
+    <!-- 方法三对应的窗口 -->
+    <script>
+        var age = 20;
+
+        window.name = age;
+    
+    
+    </script>
+
+</body>
+</html>

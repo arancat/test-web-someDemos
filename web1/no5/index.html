@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>9iframe内联框架之巧妙跨域5(控制事件在cookie中的存入)</title>
+    <style>
+
+        #demo{
+            position: absolute;
+            top: 100%;
+            left: 100px;
+            width: 100px;
+            height: 100px;
+            background: orange;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="demo"></div>
+
+    <script>
+        var oDemo = document.getElementById('demo');
+
+//增删改查
+        var manageCookie = {
+            setCookie: function (name, value, data) {
+                //expires
+                // var oDate = new Date();
+                // oDate.setDate(oDate.getDate() + date);
+                // document.cookie = key + '=' + val + ';expires=' + oDate; 
+
+                document.cookie = name + '=' + value + ';max-age=' +data;
+                return this;
+            },
+            removeCookie: function(name) {
+                this.setCookie(name, '', -1);
+                return this;
+            },
+            getCookie: function (name, callback) {
+                var allCookieArr = document.cookie.split('; ');
+                var len = allCookieArr.length;
+                for(var i = 0; i < len; i++ ){
+                    var itemCookieArr = allCookieArr[i].split('=');
+                    if(itemCookieArr[0] == name) {
+                        callback(itemCookieArr[1]);
+                        return this;
+                    }
+                }
+                callback(null);
+                return this;
+            }
+        }
+    
+//实现拖拽功能
+        var drag = {
+            //入口函数init,用来启动功能
+            init: function(dom){
+                this.dom = dom;
+                var _this = this;
+                this.bindEvent();
+                manageCookie.getCookie('newLeft', function(data) {
+                    // this指向的是window
+                    _this.dom.style.left = data + 'px';
+                }).getCookie('newTop', function(data) {
+                    _this.dom.style.top = data + 'px';
+                })
+            },
+            bindEvent: function () {
+                this.dom.onmousedown = this.mouseDown; 
+                //↓↓↓↓↓↓
+
+                //为什么要改变成下面的写法？
+                //——因为要改变this的指向，使得this指向drag来调用其他方法
+                //为什么call和bind都可以，但是采用bind？
+                //——因为call会立即改变，而bind在知悉执行后改变
+
+                this.dom.onmousedown = this.mouseDown.bind(this); 
+                 
+                //而为什么要改编上一行代码成drag成为this呢？
+                //——因为可能函数的名称会改变，此方法里this本身指向drag所以可以改为this
+                this.dom.onmousedown = this.mouseDown.bind(this); 
+            },
+            mouseDown: function (e) {
+                // console.log(this);——不改变this指向之前，此时指向的是原生dom
+
+                //为防止拖动过快脱离，最好绑定在document上面
+
+                //因为bindEvent已经改变了此方法里面的this从dom变成drag了
+                //所以下面也需要改变this的指向——攸下面的改变
+                // document.onmousemove = this.mouseMove;
+                // document.onmouseup = this.mouseUp;
+
+                document.onmousemove = this.mouseMove.bind(this);
+
+                document.onmouseup = this.mouseUp.bind(this);
+
+                //用THIS是因为this可以让mouseMove取到这个值，所以不用var
+                this.disY = e.clientY - this.dom.offsetTop;
+                this.disX = e.clientX - this.dom.offsetLeft;
+
+
+            },
+            mouseMove: function (e) {
+                this.newLeft = e.clientX - this.disX;
+                this.newTop = e.clientY - this.disY;
+
+                this.dom.style.left = this.newLeft + 'px';
+                this.dom.style.top = this.newTop + 'px';
+            },
+            mouseUp: function () {
+                //同时取消  等再次点击的时候重新drag
+                document.onmousemove = null;
+                document.onmouseup = null;
+
+                manageCookie.setCookie('newLeft', this.newLeft, 10000)
+                            .setCookie('newTop', this.newTop, 10000);
+            }
+
+        }
+        drag.init(oDemo);
+    
+    </script>
+</body>
+</html>

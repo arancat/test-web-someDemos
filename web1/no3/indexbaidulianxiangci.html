@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>9百度联想词功能3</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-decoration: none;
+
+        }
+        .wrapper{
+            margin: 100px;
+        }
+        input{
+            width: 400px;
+            height: 34px;
+        }
+    
+        ul{
+            display: none;
+            width: 400px;
+            border: 1px solid #ccc;
+        }
+        li:hover{
+            background: #ddd;
+        }
+        a{
+            font-size: 14px;
+            color: #999999;
+            margin: 5px;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <input type="text">
+        <ul></ul>
+    </div>
+
+
+    <script>
+        //监听每次的输入
+        var oInput = document.getElementsByTagName('input')[0],
+        oUl = document.getElementsByTagName('ul')[0];
+        
+        oInput.oninput = function() {
+            var value = this.value;
+            
+            var oScript = document.createElement('script');
+            // 可查json API免费接口 来做demo
+            oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + value + '&cb=doJson';
+            document.body.appendChild(oScript);
+            // 不要重复占用资源有很多script
+            document.body.removeChild(oScript);
+            
+        }
+    
+  
+    function doJson(data) {
+        var s= data.s,
+            str = '';
+            //判断——当s为空的时候就不需要放入str中了
+        if(s.length > 0) {
+            s.forEach(function(ele, index) {
+            str += '<li><a href=https://www.baidu.com/s?wd=' + ele + '>'+ ele + '</a></li>';
+        })
+            oUl.innerHTML = str;
+            oUl.style.display = 'block';
+        }else {
+         oUl.style.display = 'none';
+        }
+       
+    }
+    
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ajax</title>
+</head>
+<body>
+        // 定外卖过程
+        // 1 设备（手机电脑）
+        // 2 APP （美团 饿了么）
+        // 3 打开APP （商品  商家
+        // 4 下单 （不要麻辣不要汤
+        // 5 监听外卖信息
+        // 6 开门 验货  处理
+        
+        
+        // ajax 
+        // 1 浏览器(在wamp浏览器中打开的)
+        // 2 ajax对象
+        // 3 ajax.open(method, url, true);
+        // 4 ajax.send();
+        // 5 onreadystatechange 4
+        // 6 status == 200(响应成功) 404(本身就不存在) 503(服务器没处理好，崩了)
+
+        <button id="btn">btn</button>
+        <ul id='ul'></ul>
+        <!-- id为ul，script中可以直接引用id的值来选择 dom -->
+
+        <script>
+            
+        btn.onclick = function() {
+            ajaxFunc(showList);
+        }//按钮启动函数
+
+        function ajaxFunc(callback) {//回调函数可以处理其他函数，不仅仅是showlist了
+                
+            var xhr = null;
+            if(window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            }else {
+                xhr = new ActiveXObject('Microsoft.XMLHttp');
+            }
+
+            xhr.open('GET', './getNews.php', true);
+
+            xhr.send();
+
+            // xhr.onreadystatechange = function() {
+            // 肯定是一直在变化的 0--4
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4) {
+                    if(xhr.status == 200) {
+
+                        callback(xhr.responseText);
+
+                    }
+                }
+            }
+        
+            // var arr = [
+            //     {},
+            //     {},
+            //     {}
+            // ]  _____JSON格式↓
+
+            function showList(data) {
+                var value = JSON.parse(data);
+                console.log(value);
+                var str = '';
+                value.forEach(function (ele, index) {
+                    str += '<li>' + ele.title + '-' + ele.date + '</li>';
+                })
+                ul.innerHTML = str;//渲染
+            }
+        }
+        
+        </script>
+
+
+
+        <!-- 设置POST的具体写法↓ -->
+        <script>
+                    btn.onclick = function() {
+            ajaxFunc(showList);
+        }//按钮启动函数
+
+        function ajaxFunc(callback) {//回调函数可以处理其他函数，不仅仅是showlist了
+                
+            var xhr = null;
+            if(window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            }else {
+                xhr = new ActiveXObject('Microsoft.XMLHttp');
+            }
+
+
+
+
+
+            // 如何处理判断是get还是post？↓
+            //flag是处理同步异步的
+            function ajaxFunc(method, url, data, callback, flag) {//回调函数可以处理其他函数，不仅仅是showlist了
+                
+                var xhr = null;
+                if(window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                }else {
+                    xhr = new ActiveXObject('Microsoft.XMLHttp');
+                }
+            // 如何处理判断的过程
+            if(method == 'GET') {
+                xhr.open('GET', url + '?' + data, flag);
+                xhr.send();
+            }else if(method == 'post') {
+                xhr.open('POST', url, flag);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(data);//'username=aimee&age=18'——data
+            }
+
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4) {
+                    if(xhr.status == 200) {
+
+                        callback(xhr.responseText);
+
+                    }
+                }
+            }
+
+
+
+
+            // 以下是单一的post过程，不包含判断
+            xhr.open('POST', './post.php', true);
+
+            //新增请求头 传值的时候还要写清楚编码格式
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');//内容的编码格式
+            //发送内容改变↓
+            xhr.send('username=aimee&age=18');//把信息写死了传 过去的样本
+
+            // xhr.onreadystatechange = function() {
+            // 肯定是一直在变化的 0--4
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4) {
+                    if(xhr.status == 200) {
+
+                        callback(xhr.responseText);
+
+                    }
+                }
+            }
+        
+            // var arr = [
+            //     {},
+            //     {},
+            //     {}
+            // ]  _____JSON格式↓
+
+            function showList(data) {
+                var value = JSON.parse(data);
+                console.log(value);
+                var str = '';
+                value.forEach(function (ele, index) {
+                    str += '<li>' + ele.title + '-' + ele.date + '</li>';
+                })
+                ul.innerHTML = str;//渲染
+            }
+        }
+        </script>
+</body>
+</html> 

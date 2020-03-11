@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+} 
+.nav {
+    height: 28px;
+    width: 100%;
+    min-width: 950px;
+    background: #545652;
+    color: #5d5d5d;
+    font-size: 12px;
+}
+.nav a{
+    color: #d5d5d5;
+    line-height: 28px;
+    padding: 0 10px;
+}
+.nav li{
+    display: inline-block;
+}
+.nav .top-nav-info{
+    float: right;
+}
+.nav .top-nav-app{
+    float: right;
+}
+.nav-music{
+    width: 100%;
+    background: #ccc;
+    padding: 20px 0;
+}
+.nav-music .nav-wrap{
+    position: relative;
+    width: 950px;
+    margin: 0 auto;
+}
+/* 清除浮动 */
+.nav-music .nav-wrap::after{
+    display: block;
+    content: '';
+    clear: both;
+}
+.nav-music .nav-wrap .nav-logo{
+    float: left;
+    width: 150px;
+    height: 50px;
+}
+.nav-music .nav-wrap a{
+    display: inline-block;
+    width: 150px;
+    height: 50px;
+    background: url('https://img3.doubanio.com/dae/accounts/resources/2f48733/music/assets/lg_music_a12_2.png?s=1') no-repeat;
+}
+.nav-music .nav-wrap .nav-search{
+    float: left;
+    width: 300px;
+    height: 50px;
+}
+.search{
+    padding: 10px;
+    width: 200px;
+}
+.nav-list ul{
+    position: absolute;
+}

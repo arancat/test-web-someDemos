@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cookie</title>
+</head>
+<body> 
+    
+            <!-- 怎么让服务器认识你啊？
+        一．标记用户身份http请求头
+        1   请求头request headers  ——form： e-mail
+        2   user-agent            ——user-agent：浏览器
+        3 referer 从哪个链接接入的   上一次浏览的网站（与上一个相关联的内容）
+        ——referer：跳转链接
+        二．IP地址（特性Ps:IP地址不稳定  可设置动态等）
+        三．用户登录
+        四．胖URL
+        
+        胖url缺点：资源无法共享  每次都会生成  页面关闭了就会没了（活动范围只在这个窗口内，且在他的存在时期之内）
+        五．Cookie
+        （用处非常广泛）
+        Cookie是什么呢？如何标记工作？ -->
+
+
+
+
+
+        <!-- cookie存储的格式类似于，举例2组：(1)一条一条存的
+        #domain      path     expires    name         value
+        .daidu.com   /web     1234567    age           18
+        .daidu.com   /web     1234567    age           18
+        .daidu.com   /web     1234567    age           18
+        .daidu.com   /web     1234567    age           18
+        .......
+
+        (2)一段一段存储的
+        adsdsf
+        cdvafghgyhyhjy
+        dada
+
+        adsdsf
+        cdvafghgyhyhjy
+        dada
+
+        adsdsf
+        cdvafghgyhyhjy
+        dada
+
+
+        cookie只是用来做标识的 -->
+    <script>
+
+        
+
+        //怎么找到时分秒设置——具体的日期对象
+        var oDate = new Date();
+        // console.log(oDate);
+        oDate.setDate(oDate.getDate() + 3);//设置在三天后
+
+        // console.log(oDate.getDate() + 3);
+
+
+        // //  不能合并来写，因为分号之后的是默认为第一个的描述
+        document.cookie = "age=18;max-age=1000";
+        document.cookie = "name=aimee;expires=" + oDate;
+        document.cookie = "age=19;max-age=1000";//条件一样，直接覆盖
+        document.cookie = 'school=duyi;expires=' + oDate + ';path=/';
+        document.cookie = 'school=duyi;expires=' + oDate + ';path=/web';//这两个的不一样
+
+
+        //如何删除？——保质期过了就会自动删除——在当前时间的过去式
+
+        // document.cookie = "age=18;max-age=-1";//max-age=-1
+
+    
+    
+        var manageCookie = {
+            setCookie:  function (name, value, time) {
+                document.cookie = name + '=' + value + ';max-age=' + time;
+                return this;
+            },
+            removeCookie: function(name) {
+                return this.setCookie(name, '', -1);//只要是负数，写死了就可以取消
+            },
+            getCookie: function (name, callback) {
+                // 分割成数组
+                var allCookieArr = document.cookie.split('; ');
+                console.log(allCookieArr);
+                //为什么不用forEach——因为找到目标name不需要遍历
+                for( var i=0; i < allCookieArr.length; i++) {
+
+                    var itemCookieArr = allCookieArr[i].split('=');
+                    
+                    if(itemCookieArr[0] == name){
+                        callback(itemCookieArr[1]);
+                        return this;
+                    }
+                }
+                callback(undefined);
+                return this;
+            }
+        }
+    
+        // manageCookie.setCookie('color', 'red', 100000);
+        // manageCookie.setCookie('color', 'red', 100000);
+        // manageCookie.setCookie('color', 'red', 100000);
+        // manageCookie.setCookie('color', 'red', 100000);
+        // ......
+
+        //不要忘记了js还可以链式调用——↓
+        manageCookie
+            .setCookie('color', 'red', 100000)//增加 + 修改
+            .setCookie('sell', 'onsale', 200000)
+            .removeCookie('name')//删除
+            .getCookie('age', function (data ) {
+                console.log(data);
+            });
+    
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 300px;
+            height:200px;
+            background: #ccc;
+            color: #fff;
+            text-align: center;
+            line-height: 200px;
+            font-size: 30px;
+        }
+    
+    
+    </style>
+</head>
+<body>
+    <div id="box">0</div>
+    <script>
+
+        box.onmousemove = throttle(function () {
+                this.innHTML = this.innerHTML++;
+            }, 100);
+        
+
+
+        // function throttle(func, wait) {
+        //     var lastTime = 0;
+        //     return function () {
+        //         var now = +new Date();
+        //         if(now -lastTime > wait) {
+        //             func.apply(this, arguments);
+                    // lastTime = now;
+        //         }
+        //     }
+
+        // }
+        function throttle(func, wait) {
+            var timer = null;
+            return function () {
+                var _this = this;
+                var argu = arguments;
+                if(!timer) {
+                    timer = setTimeout(function () {
+                        func.apply(_this, argu);
+                        timer = null;
+                    }, wait)
+                }
+                
+            }
+
+        }
+
+        
+
+
+
+
+
+
+        // function cb(e) {
+        //     console.log(this.value);
+        //     console.log(e.target);
+        // }
+
+        // var setUseAction = debounce(cb, 3000);
+        
+        // btn.onclick = setUseAction.cancel;
+        // search.oninput = setUseAction;
+
+        
+        // function debounce(func, time, flag) {
+        //     var timer = null;
+        //     var debounced = function () {
+        //         var _this = this;
+        //         var argu = arguments;
+        //         clearTimeout(timer);
+        //         if(flag) {
+        //             if(!timer) func.apply(_this, argu);
+        //             timer = setTimeout(function () {
+        //                 timer = null;
+        //             }, time)
+        //         } else {
+        //             timer = setTimeout(function () {
+        //                 func.apply(_this, argu);
+        //             }, time)
+        //         }  
+        //     }
+        //     debounced.cancel = function () {
+        //         clearTimeout(timer);
+        //         timer = null;
+        //     }
+        //     return debounced;
+        // }
+
+
+
+    
+    
+    
+    
+    </script>
+</body>
+</html>

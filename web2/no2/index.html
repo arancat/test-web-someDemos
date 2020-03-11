@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>10实战用jQueryajax调用豆瓣后台接口2</title>
+</head>
+<body>
+    <div class="demo"></div>
+    <script src="./src/js/jquery.js"></script>
+    <script>
+        //$.ajax({
+        //      type: 'GET'
+        //      url:
+        //      dataType: 'jsonp'
+        //      data: 'wd=lol'
+        //      jsonp:'cb'
+        //      jsonCallback: 'dg'
+        //     })
+            //function dg(data) {
+            //     console.log(data);
+            //  }
+
+
+
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.douban.com/v2/music/search',
+            dataType: 'jsonp',
+            success: function (data) {
+                console.log(data);
+            }
+        })
+
+    
+    
+    
+    
+    
+    
+    </script>
+</body>
+
+</html>
